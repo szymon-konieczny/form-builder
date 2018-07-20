@@ -1,0 +1,27 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  background: #faf8e5;
+}
+
+.btn {
+  padding: 5px 10px;
+  margin: 0 10px;
+  border: 1px solid #79ebfa;
+  box-shadow: 1px 1px 2px 0 #79ebfa;
+  border-radius: 5px;
+  background: #ffffff;
+  cursor: pointer;
+}
+.btn:last-child {
+  margin: 0;
+}
+.btn:hover {
+  background: #79ebfa;
+  color: #292929;
+}
