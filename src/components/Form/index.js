@@ -1,5 +1,4 @@
 import * as React from 'react';
-import uuid from 'uuid';
 import PropTypes from 'prop-types';
 import Input from '../Input/index';
 import './form.scss';
@@ -39,8 +38,8 @@ export default class Form extends React.Component {
 };
 
 Form.propTypes = {
-  form: PropTypes.array,
-  types: PropTypes.array,
+  form: PropTypes.arrayOf(PropTypes.object),
+  types: PropTypes.arrayOf(PropTypes.object),
   update: PropTypes.func,
   delete: PropTypes.func
 };

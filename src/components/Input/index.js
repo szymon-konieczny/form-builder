@@ -1,4 +1,5 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import './input.scss';
 
 export default class Input extends React.Component {
@@ -33,6 +34,13 @@ export default class Input extends React.Component {
           <button className="btn" onClick={ this.props.handleDelete } data-id={ id } >Delete</button>
         </div>
       </div>
-    )
-  }
-}
+    );
+  };
+};
+
+Input.propTypes = {
+  id: PropTypes.number,
+  question: PropTypes.string,
+  types: PropTypes.arrayOf(PropTypes.object),
+  handleDelete: PropTypes.func
+};
