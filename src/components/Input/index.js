@@ -4,14 +4,27 @@ import './input.scss';
 
 export default class Input extends React.Component {
 
+  state = {
+    form: [],
+    inputData: []
+  };
+
+  componentDidmount = () => {
+    // this.setState({
+    //   form: this.props.form
+    // });
+  };
+
   onChange = () => {
-    console.log('Change!');
+    // this.props.handleChange();
   };
 
   render() {
+    
     const { id, question, types } = this.props;
+
     return (
-      <div key={ id } className="input-data">
+      <div className="input-data">
         <label htmlFor="question" className="input-label">Question: 
           <input type="text" name="question" 
             defaultValue={ question } 
@@ -20,7 +33,8 @@ export default class Input extends React.Component {
           />
         </label>
         <label htmlFor="type" className="input-label">Type: 
-          <select name="type" defaultValue={ question } 
+          <select name="type" 
+            defaultValue={ question } 
             onChange={ this.onChange } 
             className="input select"
           >
@@ -39,7 +53,7 @@ export default class Input extends React.Component {
 };
 
 Input.propTypes = {
-  id: PropTypes.number,
+  id: PropTypes.string,
   question: PropTypes.string,
   types: PropTypes.arrayOf(PropTypes.object),
   handleDelete: PropTypes.func

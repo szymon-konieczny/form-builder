@@ -6,45 +6,68 @@ import './App.scss';
 export default class App extends React.Component {
   
   state = {
-    inputTypes: [{
-      type: 'text',
-      name: 'Text'
-    }, {
-      type: 'number',
-      name: 'Number'
-    }, {
-      type: 'radio',
-      name: 'Yes / No'
-    }],
     form: []
   };
+
+  inputTypes = [{
+    type: 'text',
+    name: 'Text'
+  }, {
+    type: 'number',
+    name: 'Number'
+  }, {
+    type: 'radio',
+    name: 'Yes / No'
+  }];
 
   defaultInput = {
     id: null,
     parentId: null,
     question: '',
-    type: this.state.inputTypes
-  }
+    type: this.inputTypes
+  };
 
-  onFormUpdate = (formData) => {
-    const { form } = this.state;
+  componentDidMount = () => this.setState({
+    form: this.fetchFromLocalStorage() || []
+  });
 
+  fetchFromLocalStorage = () => {
+    try {
+      return JSON.parse(localStorage.getItem('form')) || [];
+    }
+    catch(error) {
+      console.log('Fetching data from local storage failed: ', error)
+    };
+  };
+
+  saveToLocalStorage = (formData) => {
+    try {
+      const form = [...formData];
+      const storageData = JSON.stringify(form);
+      localStorage.setItem('form', storageData);
+      this.setState({
+        form: this.fetchFromLocalStorage()
+      })
+    }
+    catch(error) {
+      console.log('Saving to local storage failed: ', error)
+    }; 
+  };
+
+  onFormUpdate = () => {
     const inputConfig = {
-      ...this.defaultInput,
+      ...inputConfig,
       id: uuid()
     };
-
-    this.setState({
-      form: [...form, inputConfig]
-    });
+    
+    const formData = [...this.fetchFromLocalStorage(), inputConfig];
+    this.saveToLocalStorage(formData);
   };
 
   onInputDelete = (id) => {
-    const { form } = this.state;
+    const form = this.fetchFromLocalStorage();
     const newForm = form.filter(item => item.id !== id).map(item => item);
-    this.setState({
-      form: newForm
-    });
+    this.saveToLocalStorage(newForm);
   };
 
   render() {
@@ -52,7 +75,7 @@ export default class App extends React.Component {
       <div className="App">
         <Form 
           form={ this.state.form } 
-          types={ this.state.inputTypes } 
+          types={ this.inputTypes } 
           update={ this.onFormUpdate }
           delete={ this.onInputDelete }
         />
