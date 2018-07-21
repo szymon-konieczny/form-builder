@@ -10,6 +10,9 @@ export default class App extends React.Component {
   };
 
   inputTypes = [{
+    type: '',
+    name: ''
+  }, {
     type: 'text',
     name: 'Text'
   }, {
@@ -19,13 +22,6 @@ export default class App extends React.Component {
     type: 'radio',
     name: 'Yes / No'
   }];
-
-  defaultInput = {
-    id: null,
-    parentId: null,
-    question: '',
-    type: this.inputTypes
-  };
 
   componentDidMount = () => this.setState({
     form: this.fetchFromLocalStorage() || []
@@ -50,17 +46,24 @@ export default class App extends React.Component {
       })
     }
     catch(error) {
-      console.log('Saving to local storage failed: ', error)
+      console.log('Saving data to local storage failed: ', error)
     }; 
   };
 
-  onFormUpdate = () => {
+  onFormUpdate = (id, name, value) => {
+    const form = this.state.form;
+    const updatedForm = form.map(item => item.id === id ? item = { ...item, [name]: value } : item );
+    this.saveToLocalStorage(updatedForm);
+  };
+
+  onAddInput = () => {
     const inputConfig = {
       ...inputConfig,
-      id: uuid()
+      id: uuid(),
+      type: null,
+      parentId: null
     };
-    
-    const formData = [...this.fetchFromLocalStorage(), inputConfig];
+    const formData = [...this.fetchFromLocalStorage(), inputConfig]
     this.saveToLocalStorage(formData);
   };
 
@@ -76,6 +79,7 @@ export default class App extends React.Component {
         <Form 
           form={ this.state.form } 
           types={ this.inputTypes } 
+          add={ this.onAddInput }
           update={ this.onFormUpdate }
           delete={ this.onInputDelete }
         />

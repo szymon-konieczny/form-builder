@@ -4,42 +4,38 @@ import './input.scss';
 
 export default class Input extends React.Component {
 
-  state = {
-    form: [],
-    inputData: []
-  };
-
-  componentDidmount = () => {
-    // this.setState({
-    //   form: this.props.form
-    // });
-  };
-
-  onChange = () => {
-    // this.props.handleChange();
+  handleOnChange = (e) => {
+    const id = e.target.dataset.id;
+    const name = e.target.name;
+    const value = e.target.value;
+    this.props.handleChange(id, name, value);
   };
 
   render() {
     
-    const { id, question, types } = this.props;
+    const { id, parentId, question, types, type: typeOfInput } = this.props;
 
     return (
       <div className="input-data">
         <label htmlFor="question" className="input-label">Question: 
           <input type="text" name="question" 
-            defaultValue={ question } 
-            onChange={ this.onChange }
+            defaultValue={ question }
+            data-id={ id }
+            onChange={ this.handleOnChange }
             className="input"
+            required
           />
         </label>
         <label htmlFor="type" className="input-label">Type: 
-          <select name="type" 
-            defaultValue={ question } 
-            onChange={ this.onChange } 
+          <select name="type"
+            data-id={ id }
+            value={ typeOfInput }
+            onChange={ this.handleOnChange } 
             className="input select"
+            required
           >
             { types.map(type => (
-              <option key={ type.name } >{ type.name }</option>
+              <option key={ type.name } value={ type.name } >{ type.name }</option>
             )) }
           </select>
         </label>
@@ -56,5 +52,7 @@ Input.propTypes = {
   id: PropTypes.string,
   question: PropTypes.string,
   types: PropTypes.arrayOf(PropTypes.object),
-  handleDelete: PropTypes.func
+  type: PropTypes.string,
+  handleDelete: PropTypes.func,
+  handleChange: PropTypes.func,
 };

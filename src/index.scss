@@ -11,16 +11,18 @@ body {
 
 .btn {
   padding: 5px 10px;
-  margin: 0 10px;
+  margin: 5px 10px;
   border: 1px solid #79ebfa;
   box-shadow: 1px 1px 2px 0 #79ebfa;
   border-radius: 5px;
   background: #ffffff;
   cursor: pointer;
 }
+
 .btn:last-child {
-  margin: 0;
+  margin: 0 10px 0 0;
 }
+
 .btn:hover {
   background: #eef8fa;
   color: #292929;

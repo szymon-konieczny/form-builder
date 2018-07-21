@@ -13,13 +13,10 @@ export default class Form extends React.Component {
 
   addInput = (e) => {
     e.preventDefault();
-    this.props.update();
+    this.props.add();
   };
 
-  onUpdate = () => {
-    // this.props.update();
-    console.log('Data has been updated!');
-  };
+  onUpdate = (id, name, value) => this.props.update(id, name, value);
 
   render() {
     const { types, form } = this.props;
@@ -27,11 +24,11 @@ export default class Form extends React.Component {
       <form className="form-wrapper" >
         { form.length > 0 
           ? form.map(item => (
-              <Input 
-                form={ form }
+              <Input
                 key={ item.id }
                 id={ item.id } 
-                question={ item.question || '' } 
+                question={ item.question || '' }
+                type={ item.type }
                 types={ types }
                 handleDelete={ this.deleteItem }
                 handleChange={ this.onUpdate }
@@ -49,5 +46,6 @@ Form.propTypes = {
   form: PropTypes.arrayOf(PropTypes.object),
   types: PropTypes.arrayOf(PropTypes.object),
   update: PropTypes.func,
-  delete: PropTypes.func
+  delete: PropTypes.func,
+  add: PropTypes.func
 };
