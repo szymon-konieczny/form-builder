@@ -55,7 +55,7 @@ export default class App extends React.Component {
 
   onFormUpdate = (updateConfig) => {
     const { id, parentId, name, value } = updateConfig;
-    console.log(updateConfig)
+    console.log('1. App: ', updateConfig)
     const form = this.state.form;
     const updatedForm = form.map(item => item.id === id 
       ? item = { ...item, [name]: value } 
@@ -99,21 +99,32 @@ export default class App extends React.Component {
     console.log('Sub-Input has been added!', parentId)
   };
 
-  onInputDelete = (e) => {
-    e.preventDefault();
-    const id = e.target.dataset.id;
-    console.log(id);
-    const form = this.fetchFromLocalStorage();
+  onInputDelete = (object, targetId) => {
+
+    console.log('2. App: ', object);
+    console.log('3. App: ', targetId);
+    // const object = this.fetchFromLocalStorage();
+    const targetIndex = object.findIndex(element => element.id === targetId);
     
-    const newForm = form.filter(item => item.id !== id).map(item => item);
-    console.log(newForm);
-    this.saveToLocalStorage(newForm);
+    if (targetIndex > -1) {
+      object.splice(targetIndex, 1);
+      return object;
+    }
+    
+    object.forEach(element => {
+      element.subInputs = this.onInputDelete(element.subInputs, targetId);
+    });
+
+    // const newForm = form.filter(item => item.id !== id).map(item => item);
+    console.log('4. App: ', object);
+    return this.saveToLocalStorage(object);
   };
 
   printInputs = (array, types) => {
-    return array.map(input => (
+    return array && array.map(input => (
       <div key={ input.id }>
         <Input
+          form={ this.state.form }
           id={ input.id }
           parentId={ input.parentId }
           question={ input.question || '' }
@@ -129,9 +140,7 @@ export default class App extends React.Component {
     ));
   };
 
-  isEmpty = (array) => {
-    return array.length === 0;
-  };
+  isEmpty = (array) => array && array.length === 0;
 
   render() {
     return (

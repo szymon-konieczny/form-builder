@@ -20,6 +20,14 @@ export default class Input extends React.Component {
     this.props.handleUpdate(updateConfig);
   };
 
+  handleOnDelete = (e) => {
+    e.preventDefault();
+    const id = e.target.dataset.id;
+    const form = this.props.form;
+    console.log('Input Component: ', form);
+    this.props.handleDelete(form, id);
+  };
+
   render() {
     
     const { id, parentId, question, types, type: typeOfInput } = this.props;
@@ -63,7 +71,7 @@ export default class Input extends React.Component {
             Add Sub-Input
           </button>
           <button className="btn" 
-            onClick={ this.props.handleDelete } 
+            onClick={ this.handleOnDelete } 
             data-id={ id } 
           >
             Delete
