@@ -24,7 +24,6 @@ export default class Input extends React.Component {
     e.preventDefault();
     const id = e.target.dataset.id;
     const form = this.props.form;
-    console.log('Input Component: ', form);
     this.props.handleDelete(form, id);
   };
 
@@ -34,13 +33,11 @@ export default class Input extends React.Component {
 
     return (
       <div className="input-data">
-        { this.props.parentId && (
+        { parentId && (
           <div>
             <h4>This is sub-input</h4>
-            <h5>Parent ID: { parentId && parentId }</h5>
           </div>
         ) }
-        <h5>My ID: { id } </h5>
         <label htmlFor="question" className="input-label">Question: 
           <input type="text" name="question" 
             defaultValue={ question }
@@ -83,6 +80,7 @@ export default class Input extends React.Component {
 };
 
 Input.propTypes = {
+  form: PropTypes.arrayOf(PropTypes.object),
   id: PropTypes.string,
   question: PropTypes.string,
   types: PropTypes.arrayOf(PropTypes.object),

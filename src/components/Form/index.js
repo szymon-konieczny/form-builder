@@ -9,13 +9,12 @@ export default class Form extends React.Component {
    
     return (
       <form className="form-wrapper" >
-        
-        { form && form.length > 0 
+        <h3 className="form-header">Form Builder</h3>
+        {
+          form && form.length > 0 
           ? printInputs(form, inputTypes)
-        
           : <h4 className="form-header">Enjoy creating your form!</h4>
         }
-        
         <button className="btn" onClick={ this.props.addInput }>Add Input</button>
       </form>
     );
