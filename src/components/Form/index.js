@@ -1,42 +1,22 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import Input from '../Input/index';
 import './form.scss';
 
 export default class Form extends React.Component {
 
-  deleteItem = (e) => {
-    e.preventDefault();
-    const id = e.target.dataset.id;
-    this.props.delete(id);
-  };
-
-  addInput = (e) => {
-    e.preventDefault();
-    this.props.add();
-  };
-
-  onUpdate = (id, name, value) => this.props.update(id, name, value);
-
   render() {
-    const { types, form } = this.props;
+    const { inputTypes, form, printInputs } = this.props;
+   
     return (
       <form className="form-wrapper" >
-        { form.length > 0 
-          ? form.map(item => (
-              <Input
-                key={ item.id }
-                id={ item.id } 
-                question={ item.question || '' }
-                type={ item.type }
-                types={ types }
-                handleDelete={ this.deleteItem }
-                handleChange={ this.onUpdate }
-              />
-            ))
+        
+        { form && form.length > 0 
+          ? printInputs(form, inputTypes)
+        
           : <h4 className="form-header">Enjoy creating your form!</h4>
-       }
-       <button className="btn" onClick={ this.addInput }>Add Input</button>
+        }
+        
+        <button className="btn" onClick={ this.props.addInput }>Add Input</button>
       </form>
     );
   };
@@ -44,8 +24,10 @@ export default class Form extends React.Component {
 
 Form.propTypes = {
   form: PropTypes.arrayOf(PropTypes.object),
-  types: PropTypes.arrayOf(PropTypes.object),
-  update: PropTypes.func,
-  delete: PropTypes.func,
-  add: PropTypes.func
+  inputTypes: PropTypes.arrayOf(PropTypes.object),
+  updateInput: PropTypes.func,
+  deleteInput: PropTypes.func,
+  addInput: PropTypes.func,
+  addSubInput: PropTypes.func,
+  printInputs: PropTypes.func
 };
