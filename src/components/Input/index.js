@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import uuid from 'uuid';
 import './input.scss';
 
 export default class Input extends React.Component {
@@ -20,11 +21,20 @@ export default class Input extends React.Component {
     this.props.handleUpdate(updateConfig);
   };
 
+  handleOnAddSubInput = (e) => {
+    e.preventDefault();
+    const data = this.props.form;
+    const id = uuid();
+    const parentId = e.target.dataset.id;
+    const levelNo = this.props.levelNo;
+    this.props.handleAddSubInput(data, parentId, id, levelNo)
+  };
+
   handleOnDelete = (e) => {
     e.preventDefault();
     const id = e.target.dataset.id;
-    const form = this.props.form;
-    this.props.handleDelete(form, id);
+    const data = this.props.form;
+    this.props.handleDelete(data, id);
   };
 
   render() {
@@ -38,6 +48,7 @@ export default class Input extends React.Component {
             <h4>This is sub-input</h4>
           </div>
         ) }
+        <p>id: { id }</p>
         <label htmlFor="question" className="input-label">Question: 
           <input type="text" name="question" 
             defaultValue={ question }
@@ -62,7 +73,7 @@ export default class Input extends React.Component {
         </label>
         <div className="button-wrapper">
           <button className="btn" 
-            onClick={ this.props.handleAddSubInput }
+            onClick={ this.handleOnAddSubInput }
             data-id={ id }
           >
             Add Sub-Input

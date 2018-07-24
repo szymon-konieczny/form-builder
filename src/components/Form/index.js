@@ -6,7 +6,6 @@ export default class Form extends React.Component {
 
   render() {
     const { inputTypes, form, printInputs } = this.props;
-   
     return (
       <form className="form-wrapper" >
         <h3 className="form-header">Form Builder</h3>

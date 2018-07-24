@@ -41,11 +41,11 @@ export default class App extends React.Component {
 
   saveToLocalStorage = (formData) => {
     try {
-      const form = [...formData];
+      const form = [...formData || []];
       const storageData = JSON.stringify(form);
       localStorage.setItem('form', storageData);
       this.setState({
-        form: this.fetchFromLocalStorage()
+        form: this.fetchFromLocalStorage() || []
       })
     }
     catch(error) {
@@ -60,84 +60,109 @@ export default class App extends React.Component {
     const updatedForm = form.map(item => item.id === id 
       ? item = { ...item, [name]: value } 
       : item );
-    this.saveToLocalStorage(updatedForm);
+    this.saveToLocalStorage(updatedForm || {});
   };
 
   onAddInput = (e) => {
     e.preventDefault();
-    const form = this.fetchFromLocalStorage();
+    const form = this.fetchFromLocalStorage() || [];
+    const levelNo = 0;
 
     const inputConfig = {
       id: uuid(),
       type: null,
-      parentId: null,
-      subInputs: []
+      parentId: 0,
+      subInputs: [],
+      levelNo: levelNo
     };
 
     const updatedForm = [...form, inputConfig];
     this.saveToLocalStorage(updatedForm);
   };
 
-  onAddSubInput = (e) => {
-    e.preventDefault();
-    const parentId = e.target.dataset.id;
-    const form = this.fetchFromLocalStorage();
+  onAddSubInput = (data, parentId, id, parentLevelNo) => {
+    console.log(parentId);
 
-    const inputConfig = {
-      id: uuid(),
-      type: null,
-      parentId: parentId,
-      subInputs: []
-    };
-   
-    const updatedForm = form.map(item => item.id === parentId 
-      ? item = { ...item, subInputs: [...item.subInputs, inputConfig] } 
-      : item );
-
-    this.saveToLocalStorage(updatedForm);
-
-    console.log('Sub-Input has been added!', parentId)
+    const updatedForm = this.addSubInput(data, parentId, id, parentLevelNo);
+    return this.saveToLocalStorage(updatedForm);
   };
 
-  onInputDelete = (object, targetId) => {
+  addSubInput = (data, parentId, id, parentLevelNo) => {
+    const inputConfig = {
+      id: id,
+      parentId: parentId,
+      type: null,
+      subInputs: [],
+      levelNo: parentLevelNo
+    };
 
-    console.log('2. App: ', object);
-    console.log('3. App: ', targetId);
-    // const object = this.fetchFromLocalStorage();
-    const targetIndex = object.findIndex(element => element.id === targetId);
+    data.map(element => {
+      if (element.id === parentId) {
+        element.levelNo = parentLevelNo + 1;
+        element.subInputs = [ ...element.subInputs, inputConfig ];
+      };
+      this.onAddSubInput(element.subInputs, parentId, id, parentLevelNo + 1);
+    });
+    console.log('1: ', data);
+
+    return data;
+  };
+
+  /* -- DELETE -- */
+
+  onInputDelete = (data, targetId) => {
+    const updatedData = this.deleteInput(data, targetId);
+    return this.saveToLocalStorage(updatedData);
+  };
+
+  deleteInput(data, targetId) {
+    const targetIndex = data.findIndex(element => element.id === targetId);
     
     if (targetIndex > -1) {
-      object.splice(targetIndex, 1);
-      return object;
+      data.splice(targetIndex, 1);
+      return data;
     }
     
-    object.forEach(element => {
-      element.subInputs = this.onInputDelete(element.subInputs, targetId);
+    data.forEach(element => {
+      element.subInputs = this.onInputDelete(element.subInputs, element.id);
     });
-
-    // const newForm = form.filter(item => item.id !== id).map(item => item);
-    console.log('4. App: ', object);
-    return this.saveToLocalStorage(object);
+    return data;
   };
 
-  printInputs = (array, types) => {
-    return array && array.map(input => (
-      <div key={ input.id }>
-        <Input
-          form={ this.state.form }
-          id={ input.id }
-          parentId={ input.parentId }
-          question={ input.question || '' }
-          type={ input.type }
-          types={ types }
-          handleDelete={ this.onInputDelete }
-          handleUpdate={ this.onFormUpdate }
-          handleAddSubInput={ this.onAddSubInput }
-        /> 
-        { !this.isEmpty(input.subInputs) ? this.printInputs(input.subInputs) : false
-        }
-      </div>
-    ));
+  addLevels = (data, currentLevel = 0) => {
+    data.forEach(element => {
+      if (!element.parentId) {
+        return currentLevel;
+      }
+      element.subInputs 
+      && !this.isEmpty(element.subInputs) 
+        ? this.addLevels(element.subInputs, currentLevel + 1) 
+        : currentLevel;
+    });
+    return data;
+  };
+
+  printInputs = (data, types) => {
+    return data && data.map(input => {
+      const parentId = input.parentId;
+      return (
+        <div key={ input.id }>
+          <Input
+            levelNo={ '' }
+            form={ this.state.form }
+            id={ input.id }
+            parentId={ parentId }
+            question={ input.question || '' }
+            type={ input.type }
+            types={ types }
+            handleDelete={ this.onInputDelete }
+            handleUpdate={ this.onFormUpdate }
+            handleAddSubInput={ this.onAddSubInput }
+          /> 
+          { input.subInputs && !this.isEmpty(input.subInputs) ? this.printInputs(input.subInputs) : input.subInputs = []
+          }
+        </div>
+    )});
   };
 
   isEmpty = (array) => array && array.length === 0;
