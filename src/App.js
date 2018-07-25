@@ -73,11 +73,7 @@ export default class App extends React.Component {
       console.log('flattenInputs: ', element)
       this.flattenInputs(element.subInputs, result);
     });
-    return result.map(element => {
-      delete element.subInputs;
-      console.log('flattenInputs result.map(): ', element)
-      return element || {};
-    });
+    return result.map(element => element);
   };
 
   // addLevels = (data, currentLevel = 0) => {
