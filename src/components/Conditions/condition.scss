@@ -1,5 +1,32 @@
-.condition-wrapper {
+.conditions-wrapper {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.input-label {
+  width: 100%;
+  margin: 5px  auto;
+  font-size: .9rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.input {
+  width: 100%;
+  padding: 5px 10px;
+  margin: 0 10px;
+  border: 1px solid #79ebfa;
+  box-shadow: 1px 1px 2px 0 #79ebfa;
+  border-radius: 5px;
+  background: #ffffff;
+  display: flex;
+  align-items: center; 
+  justify-content: center;
+}
+
+.select {
+  cursor: pointer;
 }

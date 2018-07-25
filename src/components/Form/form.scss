@@ -1,7 +1,11 @@
 .form-wrapper {
-  width: 450px;
+  width: 100%;
   margin: 20px auto;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .form-header {

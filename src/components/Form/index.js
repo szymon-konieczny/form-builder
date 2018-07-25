@@ -1,11 +1,12 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import inputTypes from '../../fixtures/inputTypes';
 import './form.scss';
 
 export default class Form extends React.Component {
 
   render() {
-    const { inputTypes, form, printInputs, parent } = this.props;
+    const { form, printInputs } = this.props;
     return (
       <form className="form-wrapper" >
         <h3 className="form-header">Form Builder</h3>
@@ -22,7 +23,6 @@ export default class Form extends React.Component {
 
 Form.propTypes = {
   form: PropTypes.arrayOf(PropTypes.object),
-  inputTypes: PropTypes.arrayOf(PropTypes.object),
   updateInput: PropTypes.func,
   deleteInput: PropTypes.func,
   addInput: PropTypes.func,

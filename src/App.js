@@ -1,5 +1,6 @@
 import * as React from 'react';
 import uuid from 'uuid';
+import inputTypes from './fixtures/inputTypes';
 
 import Form from './components/Form/index';
 import Input from './components/Input/index';
@@ -12,23 +13,6 @@ export default class App extends React.Component {
     form: []
   };
 
-  inputTypes = [{
-    type: '',
-    name: ''
-  }, {
-    type: 'text',
-    name: 'Text',
-    conditions: ['Equals']
-  }, {
-    type: 'number',
-    name: 'Number',
-    conditions: ['Greater than', 'Equals', 'Less than']
-  }, {
-    type: 'radio',
-    name: 'Yes / No',
-    conditions: ['Yes', 'No']
-  }];
-
   componentDidMount() {
     this.setState({
       form: this.fetchFromLocalStorage() || []
@@ -39,7 +23,6 @@ export default class App extends React.Component {
     try {
       const dataFromLS =  JSON.parse(localStorage.getItem('form')) || [];
       return dataFromLS;
-      // return this.addLevels(dataFromLS);
     }
     catch(error) {
       console.log('Fetching data from local storage failed: ', error)
@@ -64,30 +47,17 @@ export default class App extends React.Component {
 
   findParent = (data, parentId) => {
     const elements = this.flattenInputs(data) || [];
-    return elements.filter(element => element.id === parentId);
+    return elements.filter(element => element.id === parentId)[0];
   };
 
   flattenInputs = (data, result = []) => {
-    data.forEach(element => {
+    data && data.forEach(element => {
       result = [...result, element];
       console.log('flattenInputs: ', element)
       this.flattenInputs(element.subInputs, result);
     });
-    return result.map(element => element);
+    return result.map(element => element) || [];
   };
-
-  // addLevels = (data, currentLevel = 0) => {
-  //   data.forEach(element => {
-  //     if (!element.parentId) {
-  //       return currentLevel;
-  //     }
-  //     element.subInputs 
-  //     && !this.isEmpty(element.subInputs) 
-  //       ? this.addLevels(element.subInputs, currentLevel + 1) 
-  //       : currentLevel;
-  //   });
-  //   return data;
-  // };
 
   onFormUpdate = (data, updateConfig) => {
     const updatedForm = this.formUpdate(data, updateConfig)
@@ -111,7 +81,8 @@ export default class App extends React.Component {
       id: uuid(),
       type: null,
       parentId: 0,
-      subInputs: []
+      subInputs: [],
+      levelNo: 0
     };
 
     const updatedForm = [...form, inputConfig];
@@ -125,18 +96,17 @@ export default class App extends React.Component {
 
   addSubInput = (data, parentId, id) => {
     const parent = this.findParent(data, parentId);
-   
-    const tmp = parent.map(child => child);
-    console.log(tmp);
-    console.log(data);
-    console.log(parentId);
-    // const levelNo = parent.levelNo;
 
-    const levelNo = 0;
+    const levelNo = parent && parent.levelNo || 0;
+
     const inputConfig = {
       id: id,
       parentId: parentId,
       type: null,
+      condition: {
+        type: null,
+        value: null
+      },
       subInputs: [],
       levelNo: levelNo + 1
     };
@@ -161,12 +131,10 @@ export default class App extends React.Component {
     if (targetIndex > -1) {
       data.splice(targetIndex, 1);
       return data;
-    };
-    
-    data.forEach(element => {
-      element.subInputs = this.onInputDelete(element.subInputs, element.id);
-    });
-    return data;
+    } else {
+      data.forEach(element => element.subInputs = this.onInputDelete(element.subInputs, targetId));
+      return data;
+    }
   };
 
   printInputs = (data, types) => {
@@ -175,18 +143,16 @@ export default class App extends React.Component {
       return (
         <div key={ input.id }>
           <Input
-            parent={ this.findParent }
             levelNo={ input.levelNo || 0 }
             form={ this.state.form }
             id={ input.id }
             parentId={ parentId }
             question={ input.question || '' }
             type={ input.type }
-            types={ types }
             handleDelete={ this.onInputDelete }
             handleUpdate={ this.onFormUpdate }
             handleAddSubInput={ this.onAddSubInput }
-          /> 
+          />
           { 
             input.subInputs && !this.isEmpty(input.subInputs) ? this.printInputs(input.subInputs) : input.subInputs = []
           }
@@ -199,7 +165,7 @@ export default class App extends React.Component {
       <div className="App">
         <Form
           form={ this.state.form } 
-          inputTypes={ this.inputTypes } 
+          inputTypes={ inputTypes } 
           addInput={ this.onAddInput }
           addSubInput={ this.onAddSubInput }
           updateInput={ this.onFormUpdate }
