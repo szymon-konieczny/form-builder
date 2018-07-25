@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Conditions from '../Conditions/index';
 import PropTypes from 'prop-types';
 import uuid from 'uuid';
 import './input.scss';
@@ -6,11 +7,13 @@ import './input.scss';
 export default class Input extends React.Component {
 
   handleOnChange = (e) => {
+    e.preventDefault();
+    const data = this.props.form || [];
     const id = e.target.dataset.id;
     const parentId = this.props.parentId;
     const name = e.target.name;
     const value = e.target.value;
-    
+
     const updateConfig = {
       id,
       parentId,
@@ -18,37 +21,34 @@ export default class Input extends React.Component {
       value
     };
 
-    this.props.handleUpdate(updateConfig);
+    return this.props.handleUpdate(data, updateConfig);
   };
 
   handleOnAddSubInput = (e) => {
     e.preventDefault();
-    const data = this.props.form;
+    const data = this.props.form || [];
     const id = uuid();
     const parentId = e.target.dataset.id;
-    const levelNo = this.props.levelNo;
-    this.props.handleAddSubInput(data, parentId, id, levelNo)
+    console.log(data);
+    return this.props.handleAddSubInput(data, parentId, id);
   };
 
   handleOnDelete = (e) => {
     e.preventDefault();
     const id = e.target.dataset.id;
-    const data = this.props.form;
-    this.props.handleDelete(data, id);
+    const data = this.props.form || [];
+    return this.props.handleDelete(data, id);
   };
 
   render() {
-    
+    const data = this.props.form || [];
     const { id, parentId, question, types, type: typeOfInput } = this.props;
-
+    let levelNo;
     return (
       <div className="input-data">
-        { parentId && (
-          <div>
-            <h4>This is sub-input</h4>
-          </div>
-        ) }
-        <p>id: { id }</p>
+
+        { parentId && <Conditions /> }
+
         <label htmlFor="question" className="input-label">Question: 
           <input type="text" name="question" 
             defaultValue={ question }
@@ -66,9 +66,11 @@ export default class Input extends React.Component {
             className="input select"
             required
           >
-            { types && types.map(type => (
-              <option key={ type.name } value={ type.name } >{ type.name }</option>
-            )) }
+            { types && types.map(type => {
+              return (
+                <option key={ type.name } value={ type.name } >{ type.name }</option>
+            )})
+          }
           </select>
         </label>
         <div className="button-wrapper">
