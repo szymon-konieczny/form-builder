@@ -36,11 +36,11 @@ export default class App extends React.Component {
       localStorage.setItem('form', storageData);
       this.setState({
         form: this.fetchFromLocalStorage() || []
-      })
+      });
     }
     catch(error) {
       console.log('Saving data to local storage failed: ', error)
-    }; 
+    };
   };
 
   isEmpty = (array) => array && array.length === 0;
@@ -53,23 +53,29 @@ export default class App extends React.Component {
   flattenInputs = (data, result = []) => {
     data && data.forEach(element => {
       result = [...result, element];
-      console.log('flattenInputs: ', element)
       this.flattenInputs(element.subInputs, result);
     });
     return result.map(element => element) || [];
   };
 
   onFormUpdate = (data, updateConfig) => {
-    const updatedForm = this.formUpdate(data, updateConfig)
+    const updatedForm = this.formUpdate(data, updateConfig);
+    console.log(updatedForm);
     return this.saveToLocalStorage(updatedForm);
   };
 
   formUpdate = (data, updateConfig) => {
     const { id, name, value } = updateConfig;
 
-    data.forEach(element => element.id === id 
-      ? element = { ...element, [name]: value } 
-      : this.onFormUpdate(element.subInputs, updateConfig) );
+    console.log(updateConfig);
+    
+    data.map(element => {
+      
+      if (element.id === id) {
+        return data = [{ ...element, [name]: value }];
+      };
+      this.onFormUpdate(element.subInputs, updateConfig)
+    });
     return data;
   };
 
@@ -80,9 +86,10 @@ export default class App extends React.Component {
     const inputConfig = {
       id: uuid(),
       type: null,
+      question: null,
       parentId: 0,
-      subInputs: [],
-      levelNo: 0
+      levelNo: 0,
+      subInputs: []
     };
 
     const updatedForm = [...form, inputConfig];
@@ -96,19 +103,19 @@ export default class App extends React.Component {
 
   addSubInput = (data, parentId, id) => {
     const parent = this.findParent(data, parentId);
-
     const levelNo = parent && parent.levelNo || 0;
+    const parentType = parent && parent.type || '';
 
     const inputConfig = {
       id: id,
       parentId: parentId,
       type: null,
-      condition: {
-        type: null,
-        value: null
-      },
-      subInputs: [],
-      levelNo: levelNo + 1
+      parentType: parentType,
+      question: null,
+      levelNo: levelNo + 1,
+      condition: null,
+      conditionValue: null,
+      subInputs: []
     };
 
     data.forEach(element => {
@@ -137,18 +144,19 @@ export default class App extends React.Component {
     }
   };
 
-  printInputs = (data, types) => {
+  printInputs = (data) => {
     return data && data.map(input => {
-      const parentId = input.parentId;
       return (
         <div key={ input.id }>
           <Input
             levelNo={ input.levelNo || 0 }
             form={ this.state.form }
             id={ input.id }
-            parentId={ parentId }
-            question={ input.question || '' }
+            parentId={ input.parentId }
+            parentType={ input.parentType }
+            question={ input.question }
             type={ input.type }
+            conditionValue={ input.conditionValue }
             handleDelete={ this.onInputDelete }
             handleUpdate={ this.onFormUpdate }
             handleAddSubInput={ this.onAddSubInput }

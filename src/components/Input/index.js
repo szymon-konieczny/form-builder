@@ -7,6 +7,14 @@ import './input.scss';
 
 export default class Input extends React.Component {
 
+  state = {
+    setType: true
+  };
+
+  componentDidMount = () => {
+    this.isSubInputAddButtonActive(this.props.type);
+  };
+
   handleOnChange = (e) => {
     e.preventDefault();
     const data = this.props.form || [];
@@ -19,13 +27,22 @@ export default class Input extends React.Component {
       id,
       parentId,
       name,
-      value,
-      // condition: {
-      //   type,
-      //   value
-      // }
+      value
     };
+    name === 'type' ? this.isSubInputAddButtonActive(name) : false;
     return this.props.handleUpdate(data, updateConfig);
+  };
+
+  isSubInputAddButtonActive = (type) => {
+    if (!type) {
+      this.setState({
+        setType: true
+      });
+    } else {
+      this.setState({
+        setType: false
+      });
+    };
   };
 
   handleOnAddSubInput = (e) => {
@@ -53,16 +70,22 @@ export default class Input extends React.Component {
   };
 
   render() {
-    const { id, parentId, question, type: typeOfInput } = this.props;
+    const { id, parentId } = this.props;
 
     return (
       <div className="input-data" style={ this.style }>
-
-        { !!parentId && <Conditions types={ inputTypes } type={ typeOfInput } /> }
+        { !!parentId 
+          && <Conditions 
+              form={ this.props.form }
+              parentType={ this.props.parentType } 
+              conditionValue={ this.props.conditionValue }
+              handleUpdate={ this.props.handleUpdate }
+            /> 
+        }
 
         <label htmlFor="question" className="input-label">Question: 
           <input type="text" name="question" 
-            defaultValue={ question }
+            value={ this.props.question || '' }
             data-id={ id }
             onChange={ this.handleOnChange }
             className="input"
@@ -72,14 +95,14 @@ export default class Input extends React.Component {
         <label htmlFor="type" className="input-label">Type: 
           <select name="type"
             data-id={ id }
-            value={ typeOfInput || '' }
+            value={ this.props.type || '' }
             onChange={ this.handleOnChange } 
             className="input select"
             required
           >
             { inputTypes && inputTypes.map(type => {
               return (
-                <option key={ type.name } value={ type.name } >{ type.name }</option>
+                <option key={ type.type } value={ type.type } >{ type.name }</option>
             )})
           }
           </select>
@@ -88,6 +111,7 @@ export default class Input extends React.Component {
           <button className="btn" 
             onClick={ this.handleOnAddSubInput }
             data-id={ id }
+            disabled={ this.state.setType }
           >
             Add Sub-Input
           </button>
@@ -106,9 +130,11 @@ export default class Input extends React.Component {
 Input.propTypes = {
   form: PropTypes.arrayOf(PropTypes.object),
   id: PropTypes.string,
+  levelNo: PropTypes.number,
   question: PropTypes.string,
-  type: PropTypes.string,
+  parentType: PropTypes.string,
+  conditionValue: PropTypes.string,
   handleDelete: PropTypes.func,
   handleChange: PropTypes.func,
-  handleAddInput: PropTypes.func
+  handleAddSubInput: PropTypes.func
 };
