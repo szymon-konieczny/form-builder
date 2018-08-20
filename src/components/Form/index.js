@@ -2,7 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import './form.scss';
 
-export default class Form extends React.Component {
+export class Form extends React.Component {
 
   render() {
     const { form, printInputs } = this.props;

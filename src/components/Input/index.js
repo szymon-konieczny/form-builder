@@ -1,14 +1,20 @@
 import * as React from 'react';
-import Conditions from '../Conditions/index';
+import { Conditions } from '../Conditions/index';
 import PropTypes from 'prop-types';
 import uuid from 'uuid';
-import inputTypes from '../../fixtures/inputTypes';
+import { inputTypes } from '../../fixtures/inputTypes';
+import { makeIndentation } from '../../services/styles.service';
+
 import './input.scss';
 
-export default class Input extends React.Component {
+export class Input extends React.Component {
 
   state = {
     setType: true
+  };
+
+  style = {
+    marginLeft: makeIndentation(20, this.props.levelNo)
   };
 
   componentDidMount = () => {
@@ -60,15 +66,6 @@ export default class Input extends React.Component {
     return this.props.handleDelete(data, id);
   };
 
-  makeIndentation = (indentation, multiplier) => {
-    const result = indentation * multiplier;
-    return result + 'px';
-  };
-  
-  style = {
-    marginLeft: this.makeIndentation(20, this.props.levelNo)
-  };
-
   render() {
     const { id, parentId } = this.props;
 
@@ -85,7 +82,7 @@ export default class Input extends React.Component {
 
         <label htmlFor="question" className="input-label">Question: 
           <input type="text" name="question" 
-            value={ this.props.question || '' }
+            defaultValue={ this.props.question || '' }
             data-id={ id }
             onChange={ this.handleOnChange }
             className="input"

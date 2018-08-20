@@ -1,9 +1,9 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import inputTypes from '../../fixtures/inputTypes';
+import { inputTypes } from '../../fixtures/inputTypes';
 import './condition.scss';
 
-export default class Conditions extends React.Component {
+export class Conditions extends React.Component {
 
   typeFilter = (types) => types.filter(item => item.type === this.props.parentType);
 
@@ -14,7 +14,7 @@ export default class Conditions extends React.Component {
     const parentId = this.props.parentId;
     const name = e.target.name;
     const value = e.target.value;
-
+    console.log(name, ': ', value);
     const updateConfig = {
       id,
       parentId,
@@ -73,7 +73,6 @@ export default class Conditions extends React.Component {
                   name="conditionValue"
                   type={ item.type } 
                   className="input"
-                  name="conditionValue" 
                   defaultValue={ this.props.conditionValue }
                   onChange={ this.handleOnChange }
                 />
