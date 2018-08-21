@@ -50,7 +50,7 @@ const traverseAndAddSubInput = (data, parentId, id) => {
     parentType: parentType,
     question: null,
     levelNo: levelNo + 1,
-    condition: null,
+    condition: 'Equals',
     conditionValue: null,
     subInputs: []
   };
@@ -72,6 +72,7 @@ export const formUpdate = (data, updateConfig) => {
 
 const traverseAndFormUpdate = (data, updateConfig) => {
   const { id, name, value } = updateConfig;
+
   data.forEach(element => {
     if (element.id === id) {
       element[name] = value;
@@ -102,7 +103,10 @@ const traverseAndDeleteInput = (data, targetId) => {
   if (targetIndex > -1) {
     data.splice(targetIndex, 1);
   } else {
-    data.forEach(element => element.subInputs = deleteInput(element.subInputs, targetId));
+    data.forEach(element => {
+      element.subInputs = deleteInput(element.subInputs, targetId);
+      return element;
+    });
   };
   return data;
 };

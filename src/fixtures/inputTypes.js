@@ -12,5 +12,5 @@ export const inputTypes = [{
 }, {
   type: 'radio',
   name: 'Yes / No',
-  conditions: ['Yes', 'No']
+  conditions: [1, 0]
 }];

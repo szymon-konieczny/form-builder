@@ -1,6 +1,8 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { inputTypes } from '../../fixtures/inputTypes';
+import { formUpdate } from '../../services/form.service';
+
 import './condition.scss';
 
 export class Conditions extends React.Component {
@@ -10,38 +12,41 @@ export class Conditions extends React.Component {
   handleOnChange = (e) => {
     e.preventDefault();
     const data = this.props.form || [];
-    const id = e.target.dataset.id;
+    const id = this.props.id;
     const parentId = this.props.parentId;
     const name = e.target.name;
     const value = e.target.value;
-    console.log(name, ': ', value);
+
     const updateConfig = {
       id,
       parentId,
       name,
       value
     };
-    this.props.handleUpdate(data, updateConfig);
+    return formUpdate(data, updateConfig);
   };
 
   render() {
     return (
       <div className="conditions-wrapper">
         <label htmlFor="condition" className="input-label">Condition:
-          <select name="condition" className="input select" onChange={ this.handleOnChange }>
-          {
+          <select name="condition" className="input select"
+            value={ this.props.condition || undefined }
+            onChange={ this.handleOnChange }
+          >
+          
+          { 
             this.typeFilter(inputTypes) && this.typeFilter(inputTypes)
               .map(item => {
                 return item.type === 'radio' 
                 ? ( <option 
                       key="radio"
-                      defaultValue={ item.type }
                     >
                       Equals
                     </option> )
                 : !!item.conditions && item.conditions
                   .map(condition => (
-                    <option 
+                    <option
                       key={ condition }
                     >
                     { condition }
@@ -52,6 +57,7 @@ export class Conditions extends React.Component {
           { this.typeFilter(inputTypes).map(item =>
               item.type === 'radio' 
               ? ( <select key={item.name} name="conditionValue" 
+                    value={ this.props.conditionValue } 
                     className="input select" 
                     onChange={ this.handleOnChange }
                   >
@@ -59,10 +65,9 @@ export class Conditions extends React.Component {
                     this.typeFilter(inputTypes)
                       .map(item => item.conditions && item.conditions
                         .map((condition, index) => (
-                          <option key={ condition + '_' + index } 
-                            defaultValue={ this.props.conditionValue }
+                          <option key={ condition + '_' + index }
                           >
-                            { condition }
+                            { condition ? 'Yes' : 'No' }
                           </option>
                         ))
                       )
@@ -85,8 +90,10 @@ export class Conditions extends React.Component {
 };
 
 Conditions.propTypes = {
-  form: PropTypes.arrayOf(PropTypes.object),
+  id: PropTypes.string,
   type: PropTypes.string,
-  handleUpdate: PropTypes.func,
-  conditionValue: PropTypes.string
+  condition: PropTypes.string,
+  conditionValue: PropTypes.string || PropTypes.number,
+  form: PropTypes.arrayOf(PropTypes.object),
+  parentType: PropTypes.string,
 };

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import uuid from 'uuid';
 import { inputTypes } from '../../fixtures/inputTypes';
 import { makeIndentation } from '../../services/styles.service';
+import { addSubInput, formUpdate, deleteInput } from '../../services/form.service';
 
 import './input.scss';
 
@@ -36,7 +37,8 @@ export class Input extends React.Component {
       value
     };
     name === 'type' ? this.isSubInputAddButtonActive(name) : false;
-    return this.props.handleUpdate(data, updateConfig);
+    formUpdate(data, updateConfig);
+    this.props.stateUpdate();
   };
 
   isSubInputAddButtonActive = (type) => {
@@ -56,27 +58,31 @@ export class Input extends React.Component {
     const data = this.props.form || [];
     const id = uuid();
     const parentId = e.target.dataset.id;
-    this.props.handleAddSubInput(data, parentId, id);
+    addSubInput(data, parentId, id);
+    this.props.stateUpdate();
   };
 
   handleOnDelete = (e) => {
     e.preventDefault();
     const id = e.target.dataset.id;
     const data = this.props.form || [];
-    return this.props.handleDelete(data, id);
+    deleteInput(data, id);
+    this.props.stateUpdate();
   };
 
   render() {
-    const { id, parentId } = this.props;
+    const { id, parentId, type, condition, conditionValue } = this.props;
 
     return (
       <div className="input-data" style={ this.style }>
         { !!parentId 
           && <Conditions 
+              id={ id }
+              type={ type }
+              condition={ condition }
+              conditionValue={ conditionValue }
               form={ this.props.form }
-              parentType={ this.props.parentType } 
-              conditionValue={ this.props.conditionValue }
-              handleUpdate={ this.props.handleUpdate }
+              parentType={ this.props.parentType }
             /> 
         }
 
@@ -125,13 +131,13 @@ export class Input extends React.Component {
 };
 
 Input.propTypes = {
+  levelNo: PropTypes.number,
   form: PropTypes.arrayOf(PropTypes.object),
   id: PropTypes.string,
-  levelNo: PropTypes.number,
-  question: PropTypes.string,
+  parentId: PropTypes.string,
   parentType: PropTypes.string,
+  question: PropTypes.string,
+  condition: PropTypes.string,
   conditionValue: PropTypes.string,
-  handleDelete: PropTypes.func,
-  handleChange: PropTypes.func,
-  handleAddSubInput: PropTypes.func
+  stateUpdate: PropTypes.func,
 };
