@@ -26,7 +26,7 @@ export class Input extends React.Component {
     e.preventDefault();
     const data = this.props.form || [];
     const id = e.target.dataset.id;
-    const parentId = this.props.parentId;
+    const parentId = this.props.parentId || undefined;
     const name = e.target.name;
     const value = e.target.value;
 

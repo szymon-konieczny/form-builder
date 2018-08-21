@@ -24,7 +24,7 @@ export const addInput = (e) => {
     id: uuid(),
     type: null,
     question: null,
-    parentId: 0,
+    parentId: undefined,
     levelNo: 0,
     subInputs: []
   };

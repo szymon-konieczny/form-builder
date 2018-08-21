@@ -39,7 +39,7 @@ export class Form extends React.Component {
           ? this.printInputs(form)
           : <h4 className="form-header">Enjoy creating your form!</h4>
         }
-        <button className="btn" onClick={ this.props.addInput }>Add Input z</button>
+        <button className="btn" onClick={ this.props.addInput }>Add Input</button>
       </form>
     );
   };
@@ -47,7 +47,7 @@ export class Form extends React.Component {
 
 Form.propTypes = {
   form: PropTypes.arrayOf(PropTypes.object),
-  inputTypes: PropTypes.string,
+  inputTypes: PropTypes.array,
   addInput: PropTypes.func,
   addSubInput: PropTypes.func,
   updateInput: PropTypes.func,

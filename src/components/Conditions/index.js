@@ -57,7 +57,7 @@ export class Conditions extends React.Component {
           { this.typeFilter(inputTypes).map(item =>
               item.type === 'radio' 
               ? ( <select key={item.name} name="conditionValue" 
-                    value={ this.props.conditionValue } 
+                    value={ this.props.conditionValue || undefined } 
                     className="input select" 
                     onChange={ this.handleOnChange }
                   >
