@@ -12,7 +12,7 @@ import { Form } from './components/Form/index';
 
 import './App.scss';
 
-export default class App extends React.Component {
+export class App extends React.Component {
   
   state = {
     form: []
@@ -42,7 +42,7 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
+      <main className="App">
         <Form
           form={ this.state.form } 
           inputTypes={ inputTypes } 
@@ -52,7 +52,7 @@ export default class App extends React.Component {
           deleteInput={ this.onInputDelete }
           stateUpdate={ this.onStateUpdate }
         />
-      </div>
+      </main>
     );
   };
 };

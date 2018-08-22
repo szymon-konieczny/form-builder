@@ -32,15 +32,17 @@ export class Form extends React.Component {
   render() {
     const { form, stateUpdate } = this.props;
     return (
-      <form className="form-wrapper" onChange={ stateUpdate } >
-        <h3 className="form-header">Form Builder</h3>
-        {
-          form && form.length > 0 
-          ? this.printInputs(form)
-          : <h4 className="form-header">Enjoy creating your form!</h4>
-        }
+      <section className="form-wrapper">
+        <form onChange={ stateUpdate } >
+          <h3 className="form-header">Form Builder</h3>
+          {
+            form && form.length > 0 
+            ? this.printInputs(form)
+            : <h4 className="form-header">Enjoy creating your form!</h4>
+          }
+        </form>
         <button className="btn" onClick={ this.props.addInput }>Add Input</button>
-      </form>
+      </section>
     );
   };
 };
