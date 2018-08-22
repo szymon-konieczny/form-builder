@@ -103,8 +103,8 @@ const traverseAndDeleteInput = (data, targetId) => {
   if (targetIndex > -1) {
     data.splice(targetIndex, 1);
   } else {
-    data.forEach(element => {
-      element.subInputs = deleteInput(element.subInputs, targetId);
+    return data = data.map(element => {
+      element.subInputs = traverseAndDeleteInput(element.subInputs, targetId);
       return element;
     });
   };
