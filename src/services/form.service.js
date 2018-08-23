@@ -1,7 +1,7 @@
 import uuid from 'uuid';
 import { fetchFromLocalStorage, saveToLocalStorage } from './storage.service';
 
-export const isEmpty = (array) => array && array.length === 0;
+export const isEmpty = (array) => array.length === 0;
 
 const flattenInputs = (data, result = []) => {
   data && data.forEach(element => {
@@ -16,9 +16,7 @@ const findParent = (data, parentId) => {
   return elements.filter(element => element.id === parentId)[0];
 };
 
-// ADDING INPUTS:
-export const addInput = (e) => {
-  e.preventDefault();
+export const addInput = () => {
   const form = fetchFromLocalStorage();
   const inputConfig = {
     id: uuid(),
@@ -29,10 +27,9 @@ export const addInput = (e) => {
     subInputs: []
   };
   const updatedForm = [...form, inputConfig];
-  return saveToLocalStorage(updatedForm);
+  saveToLocalStorage(updatedForm);
 };
 
-// ADDING SUB-INPUTS
 export const addSubInput = (data, parentId, id) => {
   const updatedForm = traverseAndAddSubInput(data, parentId, id);
   return saveToLocalStorage(updatedForm);
@@ -64,7 +61,6 @@ const traverseAndAddSubInput = (data, parentId, id) => {
   return data;
 };
 
-// UPDATING INPUTS:
 export const formUpdate = (data, updateConfig) => {
   const updatedForm = traverseAndFormUpdate(data, updateConfig);
   return saveToLocalStorage(updatedForm);
@@ -91,7 +87,6 @@ const traverseAndFormUpdate = (data, updateConfig) => {
   return data;
 };
 
-// DELETING INPUTS:
 export const deleteInput = (data, targetId) => {
   const updatedData = traverseAndDeleteInput(data, targetId);
   return saveToLocalStorage(updatedData);

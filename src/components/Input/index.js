@@ -3,7 +3,7 @@ import { Conditions } from '../Conditions/index';
 import PropTypes from 'prop-types';
 import uuid from 'uuid';
 import { inputTypes } from '../../fixtures/inputTypes';
-import { makeIndentation } from '../../services/styles.service';
+import { getIndentationValueInPx } from '../../services/styles.service';
 import { addSubInput, formUpdate, deleteInput } from '../../services/form.service';
 
 import './input.scss';
@@ -15,7 +15,7 @@ export class Input extends React.Component {
   };
 
   style = {
-    marginLeft: makeIndentation(20, this.props.levelNo)
+    marginLeft: getIndentationValueInPx(20, this.props.levelNo)
   };
 
   componentDidMount = () => {

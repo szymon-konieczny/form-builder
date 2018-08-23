@@ -1,7 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Input } from '../Input/index';
-import { isEmpty } from '../../services/form.service';
+import { addInput, isEmpty } from '../../services/form.service';
 import './form.scss';
 
 export class Form extends React.Component {
@@ -29,6 +29,12 @@ export class Form extends React.Component {
     )});
   };
 
+  handleAddInput = (e) => {
+    e.preventDefault();
+    addInput();
+    this.props.stateUpdate();
+  };
+
   render() {
     const { form, stateUpdate } = this.props;
     return (
@@ -41,7 +47,7 @@ export class Form extends React.Component {
             : <h4 className="form-header">Enjoy creating your form!</h4>
           }
         </form>
-        <button className="btn" onClick={ this.props.addInput }>Add Input</button>
+        <button className="btn" onClick={ this.handleAddInput }>Add Input</button>
       </section>
     );
   };
@@ -49,10 +55,5 @@ export class Form extends React.Component {
 
 Form.propTypes = {
   form: PropTypes.arrayOf(PropTypes.object),
-  inputTypes: PropTypes.array,
-  addInput: PropTypes.func,
-  addSubInput: PropTypes.func,
-  updateInput: PropTypes.func,
-  deleteInput: PropTypes.func,
   stateUpdate: PropTypes.func
 };
