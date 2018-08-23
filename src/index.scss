@@ -18,6 +18,7 @@ body {
   border-radius: 5px;
   background: #ffffff;
   cursor: pointer;
+  transition: all .35s;
 }
 
 .btn:last-child {
@@ -25,6 +26,6 @@ body {
 }
 
 .btn:hover {
-  background: #eef8fa;
+  background: #d0f6fd;
   color: #292929;
 }

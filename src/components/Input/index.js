@@ -10,6 +10,18 @@ import './input.scss';
 
 export class Input extends React.Component {
 
+  static propTypes = {
+    levelNo: PropTypes.number,
+    form: PropTypes.arrayOf(PropTypes.object),
+    id: PropTypes.string,
+    parentId: PropTypes.string,
+    parentType: PropTypes.string,
+    question: PropTypes.string,
+    condition: PropTypes.string,
+    conditionValue: PropTypes.string,
+    stateUpdate: PropTypes.func,
+  };
+  
   state = {
     setType: true
   };
@@ -18,8 +30,18 @@ export class Input extends React.Component {
     marginLeft: getIndentationValueInPx(20, this.props.levelNo)
   };
 
-  componentDidMount = () => {
-    this.isSubInputAddButtonActive(this.props.type);
+  componentDidMount = () => this.isSubInputAddButtonActive(this.props.type);
+
+  isSubInputAddButtonActive = (type) => {
+    if (!type) {
+      this.setState({
+        setType: true
+      });
+    } else {
+      this.setState({
+        setType: false
+      });
+    };
   };
 
   handleOnChange = (e) => {
@@ -39,18 +61,6 @@ export class Input extends React.Component {
     name === 'type' ? this.isSubInputAddButtonActive(name) : false;
     formUpdate(data, updateConfig);
     this.props.stateUpdate();
-  };
-
-  isSubInputAddButtonActive = (type) => {
-    if (!type) {
-      this.setState({
-        setType: true
-      });
-    } else {
-      this.setState({
-        setType: false
-      });
-    };
   };
 
   handleOnAddSubInput = (e) => {
@@ -75,6 +85,7 @@ export class Input extends React.Component {
 
     return (
       <div className="input-data" style={ this.style }>
+
         { !!parentId 
           && <Conditions 
               id={ id }
@@ -110,6 +121,7 @@ export class Input extends React.Component {
           }
           </select>
         </label>
+
         <div className="button-wrapper">
           <button className="btn" 
             onClick={ this.handleOnAddSubInput }
@@ -118,26 +130,16 @@ export class Input extends React.Component {
           >
             Add Sub-Input
           </button>
+
           <button className="btn" 
             onClick={ this.handleOnDelete } 
             data-id={ id } 
           >
             Delete
           </button>
+
         </div>
       </div>
     );
   };
-};
-
-Input.propTypes = {
-  levelNo: PropTypes.number,
-  form: PropTypes.arrayOf(PropTypes.object),
-  id: PropTypes.string,
-  parentId: PropTypes.string,
-  parentType: PropTypes.string,
-  question: PropTypes.string,
-  condition: PropTypes.string,
-  conditionValue: PropTypes.string,
-  stateUpdate: PropTypes.func,
 };

@@ -6,6 +6,11 @@ import './form.scss';
 
 export class Form extends React.Component {
 
+  static propTypes = {
+    form: PropTypes.arrayOf(PropTypes.object).isRequired,
+    stateUpdate: PropTypes.func
+  };
+
   printInputs = (data) => {
     return data && data.map(input => {
       return (
@@ -23,7 +28,9 @@ export class Form extends React.Component {
             stateUpdate={ this.props.stateUpdate }
           />
           { 
-            input.subInputs && !isEmpty(input.subInputs) ? this.printInputs(input.subInputs) : input.subInputs = []
+            input.subInputs && !isEmpty(input.subInputs) 
+              ? this.printInputs(input.subInputs) 
+              : input.subInputs = []
           }
         </div>
     )});
@@ -36,24 +43,26 @@ export class Form extends React.Component {
   };
 
   render() {
-    const { form, stateUpdate } = this.props;
+    const { 
+      props: {
+        form, 
+        stateUpdate
+      },
+      handleAddInput,
+      printInputs
+    } = this;
+
     return (
-      <section className="form-wrapper">
+      <div className="form-wrapper">
         <form onChange={ stateUpdate } >
-          <h3 className="form-header">Form Builder</h3>
           {
             form && form.length > 0 
-            ? this.printInputs(form)
-            : <h4 className="form-header">Enjoy creating your form!</h4>
+            ? printInputs(form)
+            : <h3 className="message">Enjoy creating your form!</h3>
           }
         </form>
-        <button className="btn" onClick={ this.handleAddInput }>Add Input</button>
-      </section>
+        <button className="btn" onClick={ handleAddInput }>Add Input</button>
+      </div>
     );
   };
-};
-
-Form.propTypes = {
-  form: PropTypes.arrayOf(PropTypes.object),
-  stateUpdate: PropTypes.func
 };

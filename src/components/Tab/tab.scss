@@ -1,0 +1,16 @@
+.tab-list-item {
+  width: 120px;
+  padding: 10px;
+  margin: 0 10px;
+  border: 1px solid #79ebfa;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all .35s;
+  &:hover {
+    background: #d0f6fd;
+  }
+}
+
+.tab-list-active {
+  background: #d0f6fd;
+}

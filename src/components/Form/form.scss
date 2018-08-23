@@ -1,6 +1,5 @@
 .form-wrapper {
   min-width: 100px;
-  padding: 10px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -8,6 +7,11 @@
 }
 
 .form-header {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
+  margin: 15px auto;
+}
+
+.message {
+  font-size: 1rem;
   margin: 15px auto;
 }
