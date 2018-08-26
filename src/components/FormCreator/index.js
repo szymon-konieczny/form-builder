@@ -1,10 +1,10 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { Input } from '../Input/index';
-import { addInput, isEmpty } from '../../services/form.service';
-import './form.scss';
+import { FormCreatorInput } from '../FormCreatorInput/index';
+import { addInput, isEmpty } from '../../services/form-creator.service';
+import './form-creator.scss';
 
-export class Form extends React.Component {
+export class FormCreator extends React.Component {
 
   static propTypes = {
     form: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -15,7 +15,7 @@ export class Form extends React.Component {
     return data && data.map(input => {
       return (
         <div key={ input.id }>
-          <Input
+          <FormCreatorInput
             levelNo={ input.levelNo || 0 }
             form={ this.props.form }
             id={ input.id }

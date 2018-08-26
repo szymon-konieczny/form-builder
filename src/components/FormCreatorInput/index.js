@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { Conditions } from '../Conditions/index';
+import { FormCreatorInputConditions } from '../FormCreatorInputConditions/index';
 import PropTypes from 'prop-types';
 import uuid from 'uuid';
 import { inputTypes } from '../../fixtures/inputTypes';
 import { getIndentationValueInPx } from '../../services/styles.service';
-import { addSubInput, formUpdate, deleteInput } from '../../services/form.service';
+import { addSubInput, formUpdate, deleteInput } from '../../services/form-creator.service';
 
 import './input.scss';
 
-export class Input extends React.Component {
+export class FormCreatorInput extends React.Component {
 
   static propTypes = {
     levelNo: PropTypes.number,
@@ -50,7 +50,7 @@ export class Input extends React.Component {
     const id = e.target.dataset.id;
     const parentId = this.props.parentId || undefined;
     const name = e.target.name;
-    const value = e.target.value;
+    const value = e.target.value || null;
 
     const updateConfig = {
       id,
@@ -81,19 +81,19 @@ export class Input extends React.Component {
   };
 
   render() {
-    const { id, parentId, type, condition, conditionValue } = this.props;
+    const { form, id, parentId, parentType, type, condition, conditionValue } = this.props;
 
     return (
       <div className="input-data" style={ this.style }>
 
         { !!parentId 
-          && <Conditions 
+          && <FormCreatorInputConditions 
               id={ id }
               type={ type }
               condition={ condition }
               conditionValue={ conditionValue }
-              form={ this.props.form }
-              parentType={ this.props.parentType }
+              form={ form }
+              parentType={ parentType }
             /> 
         }
 

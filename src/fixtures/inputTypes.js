@@ -4,13 +4,14 @@ export const inputTypes = [{
 }, {
   type: 'text',
   name: 'Text',
-  conditions: ['Equals']
+  conditions: ['Select condition', 'Equals']
 }, {
   type: 'number',
   name: 'Number',
-  conditions: ['Greater than', 'Equals', 'Less than']
+  conditions: ['Select condition', 'Greater than', 'Equals', 'Less than']
 }, {
   type: 'radio',
   name: 'Yes / No',
-  conditions: [1, 0]
+  conditions: ['Select condition', 'Equals'],
+  values: ['Select Yes or No', 'Yes', 'No']
 }];

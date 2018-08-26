@@ -6,7 +6,7 @@
 
 body {
   font-family: sans-serif;
-  background: #faf8e5;
+  background: #f4ffb9;
 }
 
 .btn {
@@ -28,4 +28,9 @@ body {
 .btn:hover {
   background: #d0f6fd;
   color: #292929;
+}
+
+.message {
+  font-size: 1rem;
+  margin: 15px auto;
 }

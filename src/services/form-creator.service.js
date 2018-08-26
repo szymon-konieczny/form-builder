@@ -68,10 +68,11 @@ export const formUpdate = (data, updateConfig) => {
 
 const traverseAndFormUpdate = (data, updateConfig) => {
   const { id, name, value } = updateConfig;
-
+  
   data.forEach(element => {
     if (element.id === id) {
       element[name] = value;
+        
       element.subInputs && element.subInputs.forEach(item => {
         if (item.parentId === id) {
           item.parentType = element.type;

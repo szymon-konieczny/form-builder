@@ -1,41 +1,51 @@
 import * as React from 'react';
 import { fetchFromLocalStorage } from './services/storage.service';
 import { Tabs } from './components/Tabs/index';
-import { Form } from './components/Form/index';
+import { FormCreator } from './components/FormCreator/index';
+import { FormPreview } from './components/FormPreview/index';
+import { FormExport } from './components/FormExport/index';
 import './App.scss';
 
 export class App extends React.Component {
   
   state = {
-    form: []
+    form: [],
+    conditionValue: undefined
   };
 
   componentDidMount = () => this.onStateUpdate();
 
-  onStateUpdate = () => this.setState({ 
-    form: fetchFromLocalStorage() || [] 
-  });
+  onStateUpdate = () => this.setState({ form: fetchFromLocalStorage() || [] });
 
   render() {
-    const { onStateUpdate } = this;
+    const { 
+      state: {
+        form,
+        conditionValue
+      },
+      onStateUpdate, 
+      onConditionValueUpdate 
+    } = this;
 
     return (
       <main className="App">
         <h2 className="form-header">Form Builder</h2>
         <Tabs>
           <section label="Create">
-            <Form
-              form={ this.state.form }
+            <FormCreator
+              form={ form }
               stateUpdate={ onStateUpdate }
             />
           </section>
-
+         
           <section label="Preview">
-          <h3 className="message">Preview section here!</h3>
+            <FormPreview 
+              conditionValue={ conditionValue }
+            />
           </section>
 
           <section label="Export">
-            <h3 className="message">Export section here!</h3>
+            <FormExport />
           </section>
         </Tabs>
       </main>
