@@ -45,7 +45,9 @@ export class App extends React.Component {
           </section>
 
           <section label="Export">
-            <FormExport />
+            <FormExport 
+              form={ form }
+            />
           </section>
         </Tabs>
       </main>

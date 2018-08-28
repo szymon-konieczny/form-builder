@@ -39,6 +39,7 @@ const traverseAndAddSubInput = (data, parentId, id) => {
   const parent = findParent(data, parentId);
   const levelNo = parent && parent.levelNo || 0;
   const parentType = parent && parent.type || '';
+  const parentCondition = parent && parent.condition;
 
   const inputConfig = {
     id: id,
@@ -47,6 +48,7 @@ const traverseAndAddSubInput = (data, parentId, id) => {
     parentType: parentType,
     question: null,
     levelNo: levelNo + 1,
+    parentCondition: parentCondition,
     condition: 'Equals',
     conditionValue: null,
     subInputs: []

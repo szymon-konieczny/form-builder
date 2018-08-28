@@ -10,9 +10,19 @@ export class FormPreviewItem extends React.Component {
     inputConditionValueUpdate: PropTypes.func,
   };
 
+  // state = {
+  //   condition: 'Equals'
+  // }
+
   onChangeInputConditionValue = (e) => {
+    const parentCondition = this.props.parentCondition;
+    const condition = this.props.condition;
+    const conditionData = parentCondition || condition;
     const inputConditionValue = e.target.value;
-    this.props.inputConditionValueUpdate(inputConditionValue);
+
+    console.log(condition);
+
+    this.props.inputConditionValueUpdate(conditionData, inputConditionValue);
   };
 
   render() {
@@ -20,8 +30,7 @@ export class FormPreviewItem extends React.Component {
       props: {
         id,
         question,
-        type,
-        condition
+        type
       },
       onChangeInputConditionValue
     } = this;
@@ -51,8 +60,7 @@ export class FormPreviewItem extends React.Component {
             )
             : type
             ? (<input 
-                type={ type } 
-                condition={ condition }
+                type={ type }
                 onChange={ onChangeInputConditionValue } 
               />)
             : false
