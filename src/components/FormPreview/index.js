@@ -1,21 +1,24 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { isEmpty } from '../../services/form-creator.service';
 import { fetchFromLocalStorage } from '../../services/storage.service';
 import { FormPreviewItem } from '../FormPreviewItem/index';
-// import { showInput } from '../../services/form-preview.service';
-// import './form-preview.scss';
 
 export class FormPreview extends React.Component {
 
+  static propTypes = {
+    conditionValue: PropTypes.string
+  };
+
   state = {
+    elementId: null,
     condition: null,
     conditionValue: null
   };
 
-  onConditionValueUpdate = (condition, conditionValue) => {
-    console.log(condition);
-    this.setState({ condition, conditionValue });
+  onConditionValueUpdate = conditionConfig => {
+    const { id, condition, conditionValue } = conditionConfig;
+    const elementId = id;
+    this.setState({ elementId, condition, conditionValue });
   };
 
   displayForm = data => {
@@ -28,7 +31,6 @@ export class FormPreview extends React.Component {
 
     return data.map(element => {
 
-      if (element.subInputs.length > -1) {
         return (
           <div key={ element.id } >
             <FormPreviewItem
@@ -45,7 +47,7 @@ export class FormPreview extends React.Component {
                   if (item.parentType === 'number') {
                     switch (item.condition) {
                       case 'Greater than':
-                        return conditionValue && conditionValue *1 > item.conditionValue * 1;
+                        return conditionValue && conditionValue * 1 > item.conditionValue * 1;
                       case 'Equals':
                         return conditionValue && conditionValue * 1 === item.conditionValue * 1;
                       case 'Less than':
@@ -59,26 +61,24 @@ export class FormPreview extends React.Component {
             }
           </div>
         )
-      } 
     });
   };
 
   render(){
     const {
-      getCondition,
       displayForm
     } = this;
 
     const data = fetchFromLocalStorage();
 
     return (
-      <form onChange={ getCondition } >
-          {
-            data && data.length > 0
-            ? displayForm(data)
-            : <h3 className="message">Enjoy creating your form!</h3>
-          }
-        </form>
+      <form>
+        {
+          data && data.length > 0
+          ? displayForm(data)
+          : <h3 className="message">Enjoy creating your form!</h3>
+        }
+      </form>
     );
   };
 };

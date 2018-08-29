@@ -4,6 +4,10 @@ import './form-export.scss';
 
 export class FormExport extends React.Component {
 
+  static propTypes = {
+    form: PropTypes.arrayOf(PropTypes.object)
+  };
+
   showOutputData = () => {
     const data = this.props.form;
     return data && data.length > 0 

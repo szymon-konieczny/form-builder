@@ -46,9 +46,9 @@ export class FormCreatorInput extends React.Component {
 
   handleOnChange = (e) => {
     e.preventDefault();
-    const data = this.props.form || [];
+    const { form, parentId, stateUpdate } = this.props;
+    const data = form || [];
     const id = e.target.dataset.id;
-    const parentId = this.props.parentId || undefined;
     const name = e.target.name;
     const value = e.target.value || null;
 
@@ -60,32 +60,43 @@ export class FormCreatorInput extends React.Component {
     };
     name === 'type' ? this.isSubInputAddButtonActive(name) : false;
     formUpdate(data, updateConfig);
-    this.props.stateUpdate();
+    stateUpdate();
   };
 
   handleOnAddSubInput = (e) => {
     e.preventDefault();
-    const data = this.props.form || [];
+    const { form, stateUpdate } = this.props;
+    const data = form || [];
     const id = uuid();
     const parentId = e.target.dataset.id;
     addSubInput(data, parentId, id);
-    this.props.stateUpdate();
+    stateUpdate();
   };
 
   handleOnDelete = (e) => {
     e.preventDefault();
+    const { form, stateUpdate } = this.props;
     const id = e.target.dataset.id;
-    const data = this.props.form || [];
+    const data = form || [];
     deleteInput(data, id);
-    this.props.stateUpdate();
+    stateUpdate();
   };
 
   render() {
-    const { form, id, parentId, parentType, type, condition, conditionValue } = this.props;
+    const { 
+      props: { 
+        form, id, question, parentId, parentType, type, condition, conditionValue 
+      },
+      state: {
+        setType
+      },
+      handleOnChange,
+      handleOnAddSubInput,
+      handleOnDelete
+     } = this;
 
     return (
       <div className="input-data" style={ this.style }>
-
         { !!parentId 
           && <FormCreatorInputConditions 
               id={ id }
@@ -96,12 +107,11 @@ export class FormCreatorInput extends React.Component {
               parentType={ parentType }
             /> 
         }
-
         <label htmlFor="question" className="input-label">Question: 
           <input type="text" name="question" 
-            defaultValue={ this.props.question || '' }
+            defaultValue={ question || '' }
             data-id={ id }
-            onChange={ this.handleOnChange }
+            onChange={ handleOnChange }
             className="input"
             required
           />
@@ -109,8 +119,8 @@ export class FormCreatorInput extends React.Component {
         <label htmlFor="type" className="input-label">Type: 
           <select name="type"
             data-id={ id }
-            value={ this.props.type || '' }
-            onChange={ this.handleOnChange } 
+            value={ type || '' }
+            onChange={ handleOnChange } 
             className="input select"
             required
           >
@@ -124,20 +134,19 @@ export class FormCreatorInput extends React.Component {
 
         <div className="button-wrapper">
           <button className="btn" 
-            onClick={ this.handleOnAddSubInput }
+            onClick={ handleOnAddSubInput }
             data-id={ id }
-            disabled={ this.state.setType }
+            disabled={ setType }
           >
             Add Sub-Input
           </button>
 
           <button className="btn" 
-            onClick={ this.handleOnDelete } 
+            onClick={ handleOnDelete } 
             data-id={ id } 
           >
             Delete
           </button>
-
         </div>
       </div>
     );

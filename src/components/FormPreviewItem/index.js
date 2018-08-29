@@ -4,25 +4,28 @@ import PropTypes from 'prop-types';
 export class FormPreviewItem extends React.Component {
 
   static propTypes = {
+    id: PropTypes.string,
     question: PropTypes.string,
     type: PropTypes.string,
+    parentCondition: PropTypes.string,
     condition: PropTypes.string,
-    inputConditionValueUpdate: PropTypes.func,
+    inputConditionValueUpdate: PropTypes.func
   };
-
-  // state = {
-  //   condition: 'Equals'
-  // }
 
   onChangeInputConditionValue = (e) => {
     const parentCondition = this.props.parentCondition;
     const condition = this.props.condition;
     const conditionData = parentCondition || condition;
-    const inputConditionValue = e.target.value;
+    const conditionValue = e.target.value;
+    const id = this.props.id;
 
-    console.log(condition);
-
-    this.props.inputConditionValueUpdate(conditionData, inputConditionValue);
+    const conditionConfig = {
+      id,
+      conditionData,
+      conditionValue,
+      parentCondition
+    }
+    this.props.inputConditionValueUpdate(conditionConfig);
   };
 
   render() {
