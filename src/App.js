@@ -9,8 +9,7 @@ import './App.scss';
 export class App extends React.Component {
   
   state = {
-    form: [],
-    conditionValue: undefined
+    form: []
   };
 
   componentDidMount = () => this.onStateUpdate();
@@ -21,10 +20,8 @@ export class App extends React.Component {
     const { 
       state: {
         form,
-        conditionValue
       },
-      onStateUpdate, 
-      onConditionValueUpdate 
+      onStateUpdate,
     } = this;
 
     return (
@@ -39,9 +36,7 @@ export class App extends React.Component {
           </section>
          
           <section label="Preview">
-            <FormPreview 
-              conditionValue={ conditionValue }
-            />
+            <FormPreview />
           </section>
 
           <section label="Export">
