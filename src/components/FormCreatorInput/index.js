@@ -32,7 +32,7 @@ export class FormCreatorInput extends React.Component {
 
   componentDidMount = () => this.isSubInputAddButtonActive(this.props.type);
 
-  isSubInputAddButtonActive = (type) => {
+  isSubInputAddButtonActive = type => {
     if (!type) {
       this.setState({
         setType: true
@@ -44,7 +44,7 @@ export class FormCreatorInput extends React.Component {
     };
   };
 
-  handleOnChange = (e) => {
+  handleOnChange = e => {
     e.preventDefault();
     const { form, parentId, stateUpdate } = this.props;
     const data = form || [];
@@ -63,7 +63,7 @@ export class FormCreatorInput extends React.Component {
     stateUpdate();
   };
 
-  handleOnAddSubInput = (e) => {
+  handleOnAddSubInput = e => {
     e.preventDefault();
     const { form, stateUpdate } = this.props;
     const data = form || [];
@@ -73,7 +73,7 @@ export class FormCreatorInput extends React.Component {
     stateUpdate();
   };
 
-  handleOnDelete = (e) => {
+  handleOnDelete = e => {
     e.preventDefault();
     const { form, stateUpdate } = this.props;
     const id = e.target.dataset.id;
@@ -82,7 +82,7 @@ export class FormCreatorInput extends React.Component {
     stateUpdate();
   };
 
-  render() {
+  render = () => {
     const { 
       props: { 
         form, id, question, parentId, parentType, type, condition, conditionValue 

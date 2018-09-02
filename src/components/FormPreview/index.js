@@ -4,28 +4,17 @@ import { FormPreviewItem } from '../FormPreviewItem/index';
 
 export class FormPreview extends React.Component {
 
-  displayForm = data => data.map(element => {
-    return (
-      <div key={ element.id }>
-        <FormPreviewItem input={ element } />
-      </div>
-    )}
-  );
+  displayForm = data => data.map(element => <FormPreviewItem key={ element.id } input={ element } />);
   
-  render(){
-    const {
-      displayForm
-    } = this;
-
+  render = () => {
+    const { displayForm } = this;
     const data = fetchFromLocalStorage();
+    const isDataExisting = data && data.length > 0;
+    const noDataInfo = <h3 className="message">Create your form first!</h3>;
 
     return (
       <form>
-        {
-          data && data.length > 0
-          ? displayForm(data)
-          : <h3 className="message">Create your form first!</h3>
-        }
+        { isDataExisting ? displayForm(data) :  noDataInfo }
       </form>
     );
   };

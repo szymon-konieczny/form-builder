@@ -11,7 +11,7 @@ export class FormCreator extends React.Component {
     stateUpdate: PropTypes.func
   };
 
-  printInputs = (data) => {
+  printInputs = data => {
     return data && data.map(input => {
       return (
         <div key={ input.id }>
@@ -36,13 +36,13 @@ export class FormCreator extends React.Component {
     )});
   };
 
-  handleAddInput = (e) => {
+  handleAddInput = e => {
     e.preventDefault();
     addInput();
     this.props.stateUpdate();
   };
 
-  render() {
+  render = () => {
     const { 
       props: {
         form, 

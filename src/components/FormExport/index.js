@@ -15,7 +15,7 @@ export class FormExport extends React.Component {
       : 'Nothing to show yet. Please create your form first. ;)';
   };
 
-  render(){
+  render = () => {
     return (
       <form>
         <textarea 

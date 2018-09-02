@@ -15,7 +15,7 @@ export class Tab extends React.Component {
     onClick(label);
   };
 
-  render() {
+  render = () => {
     const {
       props: {
         activeTab,

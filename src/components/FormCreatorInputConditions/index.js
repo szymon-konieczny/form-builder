@@ -36,7 +36,7 @@ export class FormCreatorInputConditions extends React.Component {
     return formUpdate(data, updateConfig);
   };
 
-  render() {
+  render = () => {
     const { 
       props: {
         parentType,

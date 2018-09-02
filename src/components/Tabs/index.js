@@ -14,13 +14,13 @@ export class Tabs extends React.Component {
     activeTab: this.props.children[0].props.label
   };
 
-  onClickTabItem = (tab) => {
+  onClickTabItem = tab => {
     this.setState({
       activeTab: tab
     });
   };
 
-  render() {
+  render = () => {
     const {
       props: {
         children
