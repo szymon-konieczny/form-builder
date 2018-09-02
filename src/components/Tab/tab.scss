@@ -5,6 +5,7 @@
   border: 1px solid #79ebfa;
   background: #ffffff;
   cursor: pointer;
+  -webkit-transition: all .35s;
   transition: all .35s;
   &:hover {
     background: #d0f6fd;

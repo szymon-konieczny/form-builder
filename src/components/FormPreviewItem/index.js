@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { getIndentationValueInPx } from '../../services/styles.service'; 
+import './form-preview-item.scss';
 
 export class FormPreviewItem extends React.Component {
 
@@ -12,16 +12,12 @@ export class FormPreviewItem extends React.Component {
     value: null
   };
 
-  style = {
-    marginLeft: getIndentationValueInPx(20, this.props.input.levelNo)
-  };
-
   onValueUpdate = e => {
     this.setState({ value: e.target.value });
   };
 
   showRadioInput = input => (
-    <div>
+    <div className="input-wrapper">
       <input type={ input.type } 
         name={ input.id } 
         id="yes" 
@@ -39,12 +35,20 @@ export class FormPreviewItem extends React.Component {
     </div>
   );
 
-  showNumberOrTextInput = input => (<input type={ input.type } onChange={ this.onValueUpdate }/>);
+  showNumberOrTextInput = input => (
+    <div>
+      <input className="input" type={ input.type } onChange={ this.onValueUpdate }/>
+    </div>
+  );
 
   showSubinputs = subInputs => {
-    const { isSubInputValid, showInput } = this;
+    const { isSubInputValid } = this;
     const filteredInputs = subInputs.filter(isSubInputValid);
-    return filteredInputs.map(showInput);
+    return filteredInputs.map((input, idx) => (
+      <div key={ `${input.id + '-' + idx}` }>
+        <FormPreviewItem input={ input } />
+      </div>
+    ));
   };
 
   isSubInputValid = subInput => {
@@ -65,8 +69,8 @@ export class FormPreviewItem extends React.Component {
   };
 
   showInput = input => (
-    <div className="form-preview-item" key={ `_${input.question}` } >
-      <h3 className="message">{ input.question }</h3>
+    <div className="form-preview-item" key={ `_${input.question}` }>
+      <h4 className="message">{ input.question }</h4>
       {
         input.type === 'radio' ? this.showRadioInput(input) : input.type ? this.showNumberOrTextInput(input) : false
       }
@@ -77,14 +81,7 @@ export class FormPreviewItem extends React.Component {
   );
 
   render = () => {
-    const { props: { input }, style, showInput } = this;
-
-    return (
-      <div className="preview-wrapper" style={ style }>
-        {
-          showInput(input)
-        }
-      </div>
-    );
+    const { props: { input }, showInput } = this;
+    return showInput(input);
   };
 };

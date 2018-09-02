@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { fetchFromLocalStorage } from '../../services/storage.service';
 import { FormPreviewItem } from '../FormPreviewItem/index';
+import './form-preview.scss';
 
 export class FormPreview extends React.Component {
 
@@ -10,10 +11,10 @@ export class FormPreview extends React.Component {
     const { displayForm } = this;
     const data = fetchFromLocalStorage();
     const isDataExisting = data && data.length > 0;
-    const noDataInfo = <h3 className="message">Create your form first!</h3>;
+    const noDataInfo = <h3 className="message">Create your form first :)</h3>;
 
     return (
-      <form>
+      <form className="form-preview-wrapper">
         { isDataExisting ? displayForm(data) :  noDataInfo }
       </form>
     );
